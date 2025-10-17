@@ -20,8 +20,8 @@ import (
 const QUIT_COMMAND = ".quit"
 const DEFAULT_WELCOME_MESSAGE = "Welcome to LibSQL shell!\n\nType \".quit\" to exit the shell, and \".help\" to show all commands\n\n"
 
-const promptNewStatement = "→  "
-const promptContinueStatement = "... "
+const promptNewStatement = "libsql> "
+const promptContinueStatement = "   ...> "
 
 type ShellConfig struct {
 	InF                   io.Reader
@@ -37,8 +37,8 @@ type ShellConfig struct {
 type Shell struct {
 	config ShellConfig
 
-	db        *db.Db
-	promptFmt func(p ...interface{}) string
+	db       *db.Db
+	colorFmt func(p ...interface{}) string
 
 	state shellState
 
@@ -55,9 +55,9 @@ type shellState struct {
 }
 
 func NewShell(config ShellConfig, db *db.Db) (*Shell, error) {
-	promptFmt := color.New(color.FgBlue, color.Bold).SprintFunc()
+	colorFmt := color.New(color.FgBlue, color.Bold).SprintFunc()
 
-	newShell := Shell{config: config, db: db, promptFmt: promptFmt}
+	newShell := Shell{config: config, db: db, colorFmt: colorFmt}
 
 	dbCmdConfig := &shellcmd.DbCmdConfig{
 		Db:                db,
@@ -87,7 +87,7 @@ func (sh *Shell) Run() error {
 	defer sh.state.readline.Close()
 
 	if !sh.config.QuietMode {
-		fmt.Print(sh.getWelcomeMessage())
+		fmt.Print(sh.colorFmt(sh.getWelcomeMessage()))
 	}
 
 	for !sh.state.interruptReadEvalPrintLoop {
@@ -164,7 +164,7 @@ func (sh *Shell) newReadline() (*readline.Instance, error) {
 	historyFile := GetHistoryFileBasedOnMode(sh.db.Uri, sh.config.HistoryMode, sh.config.HistoryName)
 
 	config := &readline.Config{
-		Prompt:          sh.promptFmt(promptNewStatement),
+		Prompt:          promptNewStatement,
 		InterruptPrompt: "^C",
 		HistoryFile:     historyFile,
 		EOFPrompt:       QUIT_COMMAND,
@@ -205,13 +205,13 @@ func (sh *Shell) appendStatementPartAndExecuteIfFinished(statementPart string) {
 	if isStatementFinished(completeStatement) {
 		sh.state.statementParts = make([]string, 0)
 		sh.state.insideMultilineStatement = false
-		sh.state.readline.SetPrompt(sh.promptFmt(promptNewStatement))
+		sh.state.readline.SetPrompt(promptNewStatement)
 		err := sh.db.ExecuteAndPrintStatements(completeStatement, sh.config.OutF, false, sh.state.printMode)
 		if err != nil {
 			db.PrintError(err, sh.state.readline.Stderr())
 		}
 	} else {
-		sh.state.readline.SetPrompt(sh.promptFmt(promptContinueStatement))
+		sh.state.readline.SetPrompt(promptContinueStatement)
 		sh.state.insideMultilineStatement = true
 	}
 }
