@@ -8,13 +8,6 @@ const (
 	JSON_MODE  PrintMode = "json"
 )
 
-type TimerMode string
-
-const (
-	ON  TimerMode = "on"
-	OFF TimerMode = "off"
-)
-
 type HistoryMode int
 
 const (

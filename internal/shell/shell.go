@@ -51,7 +51,6 @@ type shellState struct {
 	insideMultilineStatement   bool
 	interruptReadEvalPrintLoop bool
 	printMode                  enums.PrintMode
-	timerMode                  enums.TimerMode
 }
 
 func NewShell(config ShellConfig, db *db.Db) (*Shell, error) {
@@ -65,12 +64,8 @@ func NewShell(config ShellConfig, db *db.Db) (*Shell, error) {
 		ErrF:              config.ErrF,
 		SetInterruptShell: func() { newShell.state.interruptReadEvalPrintLoop = true },
 		SetMode:           func(mode enums.PrintMode) { newShell.state.printMode = mode },
-		SetTimer:          func(mode enums.TimerMode) { newShell.state.timerMode = mode },
 		GetMode: func() enums.PrintMode {
 			return newShell.state.printMode
-		},
-		GetTimer: func() enums.TimerMode {
-			return newShell.state.timerMode
 		},
 	}
 	newShell.databaseCmd = shellcmd.CreateNewDatabaseRootCmd(dbCmdConfig)
@@ -136,7 +131,6 @@ func (sh *Shell) resetState() error {
 	sh.state.interruptReadEvalPrintLoop = false
 
 	sh.state.printMode = enums.TABLE_MODE
-	sh.state.timerMode = enums.OFF
 
 	return nil
 }
