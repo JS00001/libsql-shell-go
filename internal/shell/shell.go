@@ -5,6 +5,7 @@ import (
 	"io"
 	"regexp"
 	"strings"
+	"time"
 
 	"github.com/JS00001/libsql-shell-go/internal/db"
 	"github.com/JS00001/libsql-shell-go/internal/shellcmd"
@@ -51,6 +52,7 @@ type shellState struct {
 	insideMultilineStatement   bool
 	interruptReadEvalPrintLoop bool
 	printMode                  enums.PrintMode
+	timerMode                  enums.TimerMode
 }
 
 func NewShell(config ShellConfig, db *db.Db) (*Shell, error) {
@@ -64,8 +66,12 @@ func NewShell(config ShellConfig, db *db.Db) (*Shell, error) {
 		ErrF:              config.ErrF,
 		SetInterruptShell: func() { newShell.state.interruptReadEvalPrintLoop = true },
 		SetMode:           func(mode enums.PrintMode) { newShell.state.printMode = mode },
+		SetTimer:          func(mode enums.TimerMode) { newShell.state.timerMode = mode },
 		GetMode: func() enums.PrintMode {
 			return newShell.state.printMode
+		},
+		GetTimer: func() enums.TimerMode {
+			return newShell.state.timerMode
 		},
 	}
 	newShell.databaseCmd = shellcmd.CreateNewDatabaseRootCmd(dbCmdConfig)
@@ -131,6 +137,7 @@ func (sh *Shell) resetState() error {
 	sh.state.interruptReadEvalPrintLoop = false
 
 	sh.state.printMode = enums.TABLE_MODE
+	sh.state.timerMode = enums.OFF
 
 	return nil
 }
@@ -200,13 +207,25 @@ func (sh *Shell) appendStatementPartAndExecuteIfFinished(statementPart string) {
 		sh.state.statementParts = make([]string, 0)
 		sh.state.insideMultilineStatement = false
 		sh.state.readline.SetPrompt(promptNewStatement)
-		err := sh.db.ExecuteAndPrintStatements(completeStatement, sh.config.OutF, false, sh.state.printMode)
-		if err != nil {
-			db.PrintError(err, sh.state.readline.Stderr())
+
+		if sh.state.timerMode == enums.ON {
+			start := time.Now()
+			err := sh.db.ExecuteAndPrintStatements(completeStatement, sh.config.OutF, false, sh.state.printMode)
+			elapsed := time.Since(start)
+
+			if err != nil {
+				db.PrintError(err, sh.state.readline.Stderr())
+				return
+			}
+
+			elapsedMs := float64(elapsed.Nanoseconds()) / 1_000_000.0
+			fmt.Fprintf(sh.config.OutF, "Run Time: %.2f ms\n", elapsedMs)
+		} else {
+			err := sh.db.ExecuteAndPrintStatements(completeStatement, sh.config.OutF, false, sh.state.printMode)
+			if err != nil {
+				db.PrintError(err, sh.state.readline.Stderr())
+			}
 		}
-	} else {
-		sh.state.readline.SetPrompt(promptContinueStatement)
-		sh.state.insideMultilineStatement = true
 	}
 }
 
