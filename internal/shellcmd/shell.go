@@ -20,9 +20,10 @@ var shellCmd = &cobra.Command{
 
 		cmd_input := strings.Join(args, " ")
 		shell_cmd := exec.Command(cmd_input)
+		shell_cmd.Stdout = cmd.OutOrStdout()
 
 		if err := shell_cmd.Run(); err != nil {
-			return nil
+			return fmt.Errorf("command failed: %w", err)
 		}
 
 		return nil
