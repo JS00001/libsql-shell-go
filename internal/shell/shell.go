@@ -219,7 +219,7 @@ func (sh *Shell) appendStatementPartAndExecuteIfFinished(statementPart string) {
 			}
 
 			elapsedMs := float64(elapsed.Nanoseconds()) / 1_000_000.0
-			fmt.Fprintf(sh.config.OutF, "Run Time: %.2f ms\n", elapsedMs)
+			fmt.Fprintf(sh.config.OutF, "Run Time: %.3f ms\n", elapsedMs)
 		} else {
 			err := sh.db.ExecuteAndPrintStatements(completeStatement, sh.config.OutF, false, sh.state.printMode)
 			if err != nil {
