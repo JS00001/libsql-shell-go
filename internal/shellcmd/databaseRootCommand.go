@@ -20,6 +20,8 @@ type DbCmdConfig struct {
 	SetInterruptShell func()
 	SetMode           func(mode enums.PrintMode)
 	GetMode           func() enums.PrintMode
+	SetTimer          func(mode enums.TimerMode)
+	GetTimer          func() enums.TimerMode
 }
 
 const helpTemplate = `{{range .Commands}}{{if (and (not .Hidden) (or .IsAvailableCommand) (ne .Name "completion"))}}
@@ -39,7 +41,7 @@ func NewDatabaseRootCmd(config *DbCmdConfig) *cobra.Command {
 		},
 	}
 
-	rootCmd.AddCommand(tableCmd, schemaCmd, helpCmd, readCmd, indexesCmd, quitCmd, dumpCmd, modeCmd)
+	rootCmd.AddCommand(tableCmd, schemaCmd, helpCmd, readCmd, indexesCmd, quitCmd, dumpCmd, modeCmd, timerCmd, shellCmd)
 	rootCmd.SetOut(config.OutF)
 	rootCmd.SetErr(config.ErrF)
 	rootCmd.SetHelpTemplate(helpTemplate)
