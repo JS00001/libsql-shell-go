@@ -14,6 +14,25 @@ type Printer interface {
 	print(statementResult StatementResult, outF io.Writer) error
 }
 
+type ExplainQueryPrinter struct{}
+
+func (eqp ExplainQueryPrinter) print(statementResult StatementResult, outF io.Writer) error {
+	data := [][]string{}
+
+	tableData, err := appendData(statementResult, data, TABLE)
+	if err != nil {
+		return err
+	}
+
+	root, err := BuildQueryPlanTree(tableData)
+	if err != nil {
+		return err
+	}
+	PrintQueryPlan(root)
+
+	return nil
+}
+
 type TablePrinter struct {
 	withoutHeader bool
 }
@@ -103,7 +122,10 @@ func appendData(statementResult StatementResult, data [][]string, mode FormatTyp
 	return data, nil
 }
 
-func getPrinter(mode enums.PrintMode, withoutHeader bool) (Printer, error) {
+func getPrinter(mode enums.PrintMode, withoutHeader bool, isExplainQueryPlan bool) (Printer, error) {
+	if isExplainQueryPlan {
+		return &ExplainQueryPrinter{}, nil
+	}
 	switch mode {
 	case enums.TABLE_MODE:
 		return &TablePrinter{
@@ -143,7 +165,8 @@ func PrintStatementResult(statementResult StatementResult, outF io.Writer, witho
 		return &UnableToPrintStatementResult{}
 	}
 
-	printer, err := getPrinter(mode, withoutHeader)
+	isExplainQueryPlan := IsResultComingFromExplainQueryPlan(statementResult)
+	printer, err := getPrinter(mode, withoutHeader, isExplainQueryPlan)
 	if err != nil {
 		return err
 	}
