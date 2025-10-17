@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/libsql/libsql-shell-go/internal/cmd"
+	"github.com/JS00001/libsql-shell-go/internal/cmd"
 )
 
 func main() {

@@ -3,7 +3,7 @@ package shellcmd
 import (
 	"fmt"
 
-	"github.com/libsql/libsql-shell-go/pkg/shell/enums"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/enums"
 	"github.com/spf13/cobra"
 )
 

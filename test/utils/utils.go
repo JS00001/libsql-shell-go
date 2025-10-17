@@ -5,7 +5,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/libsql/libsql-shell-go/internal/db"
+	"github.com/JS00001/libsql-shell-go/internal/db"
 	"github.com/spf13/cobra"
 )
 

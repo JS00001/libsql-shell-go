@@ -3,7 +3,7 @@ package suggester_test
 import (
 	"testing"
 
-	"github.com/libsql/libsql-shell-go/internal/suggester"
+	"github.com/JS00001/libsql-shell-go/internal/suggester"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -2,12 +2,13 @@ package shell_test
 
 import (
 	"fmt"
-	"github.com/kirsle/configdir"
 	"testing"
 
+	"github.com/kirsle/configdir"
+
+	"github.com/JS00001/libsql-shell-go/internal/shell"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/enums"
 	qt "github.com/frankban/quicktest"
-	"github.com/libsql/libsql-shell-go/internal/shell"
-	"github.com/libsql/libsql-shell-go/pkg/shell/enums"
 )
 
 const historyName = "libsql"

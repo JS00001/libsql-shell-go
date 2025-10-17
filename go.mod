@@ -1,4 +1,4 @@
-module github.com/libsql/libsql-shell-go
+module github.com/JS00001/libsql-shell-go
 
 go 1.22
 

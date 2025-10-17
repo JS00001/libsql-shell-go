@@ -6,7 +6,7 @@ import (
 	qt "github.com/frankban/quicktest"
 	"github.com/stretchr/testify/suite"
 
-	"github.com/libsql/libsql-shell-go/test/utils"
+	"github.com/JS00001/libsql-shell-go/test/utils"
 )
 
 type RootCommandShellSuite struct {

@@ -12,8 +12,8 @@ import (
 	"github.com/tursodatabase/libsql-client-go/libsql"
 	"github.com/tursodatabase/libsql-client-go/sqliteparserutils"
 
-	"github.com/libsql/libsql-shell-go/pkg/shell/enums"
-	"github.com/libsql/libsql-shell-go/pkg/shell/shellerrors"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/enums"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/shellerrors"
 )
 
 type driver int

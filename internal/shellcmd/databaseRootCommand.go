@@ -7,8 +7,8 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/cobra"
 
-	"github.com/libsql/libsql-shell-go/internal/db"
-	"github.com/libsql/libsql-shell-go/pkg/shell/enums"
+	"github.com/JS00001/libsql-shell-go/internal/db"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/enums"
 )
 
 type dbCtx struct{}

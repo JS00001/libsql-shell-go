@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"io"
 
-	"github.com/libsql/libsql-shell-go/pkg/shell/enums"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/enums"
 	"github.com/olekukonko/tablewriter"
 )
 

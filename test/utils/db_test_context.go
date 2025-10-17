@@ -9,9 +9,9 @@ import (
 
 	qt "github.com/frankban/quicktest"
 
-	"github.com/libsql/libsql-shell-go/internal/db"
-	"github.com/libsql/libsql-shell-go/internal/shell"
-	"github.com/libsql/libsql-shell-go/pkg/shell/enums"
+	"github.com/JS00001/libsql-shell-go/internal/db"
+	"github.com/JS00001/libsql-shell-go/internal/shell"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/enums"
 )
 
 type DbTestContext struct {

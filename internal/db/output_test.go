@@ -3,8 +3,8 @@ package db_test
 import (
 	"testing"
 
+	"github.com/JS00001/libsql-shell-go/test/utils"
 	qt "github.com/frankban/quicktest"
-	"github.com/libsql/libsql-shell-go/test/utils"
 )
 
 func TestGetTableOutput_GivenHeaderWithoutData_ExpectTableHasJustHeader(t *testing.T) {

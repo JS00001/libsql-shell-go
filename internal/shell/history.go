@@ -2,14 +2,15 @@ package shell
 
 import (
 	"fmt"
-	"github.com/kirsle/configdir"
 	"net/url"
 	"os"
 	"path/filepath"
 
-	"github.com/libsql/libsql-shell-go/internal/db"
-	"github.com/libsql/libsql-shell-go/pkg/shell/enums"
-	"github.com/libsql/libsql-shell-go/pkg/shell/shellerrors"
+	"github.com/kirsle/configdir"
+
+	"github.com/JS00001/libsql-shell-go/internal/db"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/enums"
+	"github.com/JS00001/libsql-shell-go/pkg/shell/shellerrors"
 )
 
 func GetHistoryFileBasedOnMode(dbPath string, mode enums.HistoryMode, historyName string) string {

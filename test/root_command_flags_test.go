@@ -5,8 +5,8 @@ import (
 
 	qt "github.com/frankban/quicktest"
 
-	"github.com/libsql/libsql-shell-go/internal/cmd"
-	"github.com/libsql/libsql-shell-go/test/utils"
+	"github.com/JS00001/libsql-shell-go/internal/cmd"
+	"github.com/JS00001/libsql-shell-go/test/utils"
 )
 
 func TestRootCommandFlags_WhenAllFlagsAreProvided_ExpectSQLStatementsExecutedWithoutError(t *testing.T) {
